@@ -1,5 +1,5 @@
-import { FaStar } from "react-icons/fa";
 import { iStay } from "../../interfaces";
+import StayCard from "../stay_card/StayCard";
 
 interface StaysListProps {
   staysData: iStay[];
@@ -13,31 +13,7 @@ function StaysList({ staysData }: StaysListProps) {
       </div>
       <div className="grid gap-8">
         {staysData.map((data, i) => (
-          <div key={i} className="">
-            <img
-              className="rounded-3xl h-60 w-full object-cover mb-3"
-              src={data.photo}
-              alt=""
-            />
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center text-lightGray gap-2">
-                {data.superHost && (
-                  <div className="text-mediumGray rounded-full border-[1px] border-mediumGray text-[0.625rem] font-bold px-2 py-1">
-                    SUPER HOST
-                  </div>
-                )}
-                <p className="text-xs">
-                  <span>{data.type}</span>&nbsp;.&nbsp;
-                  <span>{data.beds} beds</span>
-                </p>
-              </div>
-              <div className="flex items-center gap-1">
-                <FaStar className="text-softRed" />
-                <span className="text-mediumGray">{data.rating}</span>
-              </div>
-            </div>
-            <h2 className="text-sm font-bold">{data.title}</h2>
-          </div>
+          <StayCard stay={data} key={i} />
         ))}
       </div>
     </div>

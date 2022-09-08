@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  input {
-    @apply font-mulish text-sm;
-  }
-}
-
 .custom-shadow {
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
 }

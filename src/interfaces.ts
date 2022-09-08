@@ -6,6 +6,6 @@ export interface iStay {
   rating: number;
   maxGuests: number;
   type: string;
-  beds: number;
+  beds: number | null;
   photo: string;
 }

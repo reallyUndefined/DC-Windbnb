@@ -5,15 +5,15 @@ interface StayCardProps {
   stay: iStay;
 }
 function StayCard({ stay }: StayCardProps) {
-  const mbStyle = stay.superHost ? "mb-2 md:mb-3" : "mb-3 md:mb-4";
+  const gapStyle = stay.superHost ? "gap-2 md:gap-3" : "gap-3 md:gap-4";
   return (
-    <div>
+    <div className={`grid ${gapStyle}`}>
       <img
-        className={`rounded-3xl h-60 w-full object-cover ${mbStyle} cursor-pointer`}
+        className={`rounded-3xl h-60 w-full object-cover cursor-pointer`}
         src={stay.photo}
         alt=""
       />
-      <div className={`flex items-center justify-between ${mbStyle}`}>
+      <div className={`flex items-center justify-between`}>
         <div className="flex items-center text-lightGray gap-2">
           {stay.superHost && (
             <div className="text-mediumGray rounded-full border-[1px] border-mediumGray text-[0.625rem] font-bold px-2 py-1 cursor-pointer md:text-xs">
@@ -32,7 +32,7 @@ function StayCard({ stay }: StayCardProps) {
           </span>
         </div>
       </div>
-      <h2 className="text-sm font-bold text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer md:text-base">
+      <h2 className="w-11/12 min-w-0 text-sm font-bold text-ellipsis overflow-hidden whitespace-nowrap cursor-pointer md:text-base">
         {stay.title}
       </h2>
     </div>

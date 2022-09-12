@@ -9,3 +9,8 @@ export interface iStay {
   beds: number | null;
   photo: string;
 }
+
+export interface iGuests {
+  adults: number;
+  children: number;
+}

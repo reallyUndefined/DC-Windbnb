@@ -1,4 +1,4 @@
-import { iStay } from "../../interfaces";
+import { iStay } from "../../typescript_stuff/interfaces";
 import StayCard from "../stay_card/StayCard";
 
 interface StaysListProps {

@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa";
-import { iStay } from "../../interfaces";
+import { iStay } from "../../typescript_stuff/interfaces";
 
 interface StayCardProps {
   stay: iStay;

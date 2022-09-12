@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Container from "./components/container/Container";
 import Header from "./components/header/Header";
 import SearchMenu from "./components/search_menu/SearchMenu";
 import StaysList from "./components/stays_list/StaysList";
@@ -16,10 +17,12 @@ function App() {
 
   return (
     <div className="min-h-screen text-darkGray">
-      <div className="max-w-[79.5rem] mx-auto px-3 w-full">
-        <Header setShowSearchMenu={setShowSearchMenu} />
-        <StaysList staysData={data} />
-      </div>
+      <Container>
+        <div className="w-full">
+          <Header setShowSearchMenu={setShowSearchMenu} />
+          <StaysList staysData={data} />
+        </div>
+      </Container>
       {showSearchMenu && (
         <SearchMenu
           selectedLocation={selectedLocation}

@@ -7,27 +7,27 @@ import LocationPin from "../location_pin/LocationPin";
 import Button from "./Button";
 
 import { AiOutlineClose } from "react-icons/ai";
-import { iGuests, iStay } from "../../typescript_stuff/interfaces";
-import { counter, guestCategory } from "../../typescript_stuff/enums";
+import { iStay } from "../../typescript_stuff/interfaces";
+import { guestCategory } from "../../typescript_stuff/enums";
 import Container from "../container/Container";
+import { useSelector } from "react-redux";
+import {
+  changeLocation,
+  decrementGuest,
+  FiltersState,
+  incrementGuest,
+} from "../../redux/filters/filters";
+import { useDispatch } from "react-redux";
 
 interface SearchMenuProps {
   showSearchMenu: boolean;
   setShowSearchMenu: React.Dispatch<React.SetStateAction<boolean>>;
   data: iStay[];
-  selectedLocation: string;
-  noOfGuests: iGuests;
-  setSelectedLocation: React.Dispatch<React.SetStateAction<string>>;
-  setNoOfGuests: React.Dispatch<React.SetStateAction<iGuests>>;
 }
 function SearchMenu({
   setShowSearchMenu,
   showSearchMenu,
   data,
-  selectedLocation,
-  setSelectedLocation,
-  noOfGuests,
-  setNoOfGuests,
 }: SearchMenuProps) {
   const node = useClickToClose(showSearchMenu, setShowSearchMenu);
 
@@ -40,43 +40,19 @@ function SearchMenu({
 
   const ringStyle = "ring-inset ring-2 ring-offset-4 ring-lightGray";
 
+  const selectedLocation = useSelector(
+    (state: { filters: { value: FiltersState } }) =>
+      state.filters.value.location
+  );
+
+  const noOfGuests = useSelector(
+    (state: { filters: { value: FiltersState } }) => state.filters.value.guests
+  );
   const totalNoOfGuests = noOfGuests.adults + noOfGuests.children;
 
-  const handleLocationClick = (loc: string) => setSelectedLocation(loc);
-  const handleNoOfGuests = (op: counter, cat: guestCategory) => {
-    switch (cat) {
-      case guestCategory.adult:
-        if (op === counter.minus) {
-          if (noOfGuests.adults > 0)
-            return setNoOfGuests((prev) => ({
-              ...prev,
-              adults: prev.adults - 1,
-            }));
-        } else if (op === counter.plus) {
-          return setNoOfGuests((prev) => ({
-            ...prev,
-            adults: prev.adults + 1,
-          }));
-        }
-        break;
-      case guestCategory.children:
-        if (op === counter.minus) {
-          if (noOfGuests.children > 0)
-            return setNoOfGuests((prev) => ({
-              ...prev,
-              children: prev.children - 1,
-            }));
-        } else if (op === counter.plus) {
-          return setNoOfGuests((prev) => ({
-            ...prev,
-            children: prev.children + 1,
-          }));
-        }
-        break;
-      default:
-        break;
-    }
-  };
+  const dispatch = useDispatch();
+
+  const handleLocationClick = (loc: string) => dispatch(changeLocation(loc));
 
   return createPortal(
     <div className="fixed inset-0 w-full h-full bg-overlay font-mulish">
@@ -164,10 +140,10 @@ function SearchMenu({
                       subtitle="Age 13 or above"
                       value={noOfGuests.adults}
                       onMinusClick={() =>
-                        handleNoOfGuests(counter.minus, guestCategory.adult)
+                        dispatch(decrementGuest(guestCategory.adult))
                       }
                       onPlusClick={() =>
-                        handleNoOfGuests(counter.plus, guestCategory.adult)
+                        dispatch(incrementGuest(guestCategory.adult))
                       }
                     />
                     <Counter
@@ -175,10 +151,10 @@ function SearchMenu({
                       subtitle="Age 2-12"
                       value={noOfGuests.children}
                       onMinusClick={() =>
-                        handleNoOfGuests(counter.minus, guestCategory.children)
+                        dispatch(decrementGuest(guestCategory.children))
                       }
                       onPlusClick={() =>
-                        handleNoOfGuests(counter.plus, guestCategory.children)
+                        dispatch(incrementGuest(guestCategory.children))
                       }
                     />
                   </div>

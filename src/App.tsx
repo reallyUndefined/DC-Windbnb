@@ -18,10 +18,8 @@ function App() {
   return (
     <div className="min-h-screen text-darkGray">
       <Container>
-        <div className="w-full">
-          <Header setShowSearchMenu={setShowSearchMenu} />
-          <StaysList staysData={data} />
-        </div>
+        <Header setShowSearchMenu={setShowSearchMenu} />
+        <StaysList staysData={data} />
       </Container>
       {showSearchMenu && (
         <SearchMenu

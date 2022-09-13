@@ -6,7 +6,7 @@ function Container({
   className,
 }: React.PropsWithChildren<ContainerProps>) {
   return (
-    <div className={`max-w-[79.5rem] mx-auto px-3 ${className}`}>
+    <div className={`max-w-[79.5rem] w-full mx-auto px-3 ${className}`}>
       {children}
     </div>
   );

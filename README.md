@@ -1,4 +1,40 @@
-# Getting Started with Create React App
+# Dev Challenges - Windbnb
+
+## Table of contents
+
+- [Dev Challenges - Windbnb](#dev-challenges---windbnb)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+  - [Available Scripts](#available-scripts)
+    - [`yarn start`](#yarn-start)
+    - [`yarn test`](#yarn-test)
+    - [`yarn build`](#yarn-build)
+    - [`yarn eject`](#yarn-eject)
+  - [Learn More](#learn-more)
+
+## Overview
+
+### Screenshot
+
+![screenshot](./screenshots/screenshot-1.png)
+
+### Links
+
+- Solution URL: [Click here](https://devchallenges.io/solutions/CmWgSccYeQZBLHqPlLNM)
+- Live Site URL: [Click here](https://undefined-dc-windbnb.netlify.app/)
+
+## My process
+
+### Built with
+
+- React
+- Typescript
+- Redux
+- TailwindCSS
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

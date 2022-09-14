@@ -5,19 +5,19 @@ import useClickToClose from "../../hooks/useClickToClose";
 import Counter from "../counter/Counter";
 import LocationPin from "../location_pin/LocationPin";
 import Button from "./Button";
+import Container from "../container/Container";
 
 import { AiOutlineClose } from "react-icons/ai";
+
 import { iStay } from "../../typescript_stuff/interfaces";
-import { guestCategory } from "../../typescript_stuff/enums";
-import Container from "../container/Container";
-import { useSelector } from "react-redux";
+
 import {
+  changeGuests,
   changeLocation,
-  decrementGuest,
   FiltersState,
-  incrementGuest,
 } from "../../redux/filters/filters";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 interface SearchMenuProps {
   showSearchMenu: boolean;
@@ -34,25 +34,34 @@ function SearchMenu({
   const [showLocations, setShowLocations] = useState<boolean>(false);
   const [showGuests, setShowGuests] = useState<boolean>(false);
 
+  const filters = useSelector(
+    (state: { filters: { value: FiltersState } }) => state.filters.value
+  );
+
+  const [location, setLocation] = useState<string>(filters.location);
+  const [adults, setAdults] = useState<number>(filters.guests.adults);
+  const [children, setChildren] = useState<number>(filters.guests.children);
+
   const locations = Array.from(
     new Set(data.map((s) => `${s.city}, ${s.country}`))
   );
+  const totalNoOfGuests = adults + children;
 
   const ringStyle = "ring-inset ring-2 ring-offset-4 ring-lightGray";
 
-  const selectedLocation = useSelector(
-    (state: { filters: { value: FiltersState } }) =>
-      state.filters.value.location
-  );
-
-  const noOfGuests = useSelector(
-    (state: { filters: { value: FiltersState } }) => state.filters.value.guests
-  );
-  const totalNoOfGuests = noOfGuests.adults + noOfGuests.children;
-
   const dispatch = useDispatch();
 
-  const handleLocationClick = (loc: string) => dispatch(changeLocation(loc));
+  const handleSearch = () => {
+    console.log("is it working");
+    dispatch(changeLocation(location));
+    dispatch(
+      changeGuests({
+        guests: { adults, children },
+        totalGuests: totalNoOfGuests,
+      })
+    );
+    setShowSearchMenu(false);
+  };
 
   return createPortal(
     <div className="fixed inset-0 w-full h-full bg-overlay font-mulish">
@@ -86,12 +95,10 @@ function SearchMenu({
                 </span>
                 <span
                   className={`text-sm ${
-                    selectedLocation ? "text-darkGray" : "text-lightGray"
+                    location ? "text-darkGray" : "text-lightGray"
                   }`}
                 >
-                  {selectedLocation.length > 0
-                    ? selectedLocation
-                    : "Add location"}
+                  {location.length > 0 ? location : "Add location"}
                 </span>
               </div>
               <div
@@ -115,7 +122,7 @@ function SearchMenu({
                 </span>
               </div>
               <div className="hidden lg:flex items-center justify-center">
-                <Button />
+                <Button onClick={handleSearch} />
               </div>
             </div>
             <div className="px-6 mt-8 lg:grid grid-cols-3">
@@ -126,7 +133,7 @@ function SearchMenu({
                       <LocationPin
                         key={location}
                         location={location}
-                        onClick={() => handleLocationClick(location)}
+                        onClick={() => setLocation(location)}
                       />
                     ))}
                   </div>
@@ -138,24 +145,20 @@ function SearchMenu({
                     <Counter
                       title="Adult"
                       subtitle="Age 13 or above"
-                      value={noOfGuests.adults}
-                      onMinusClick={() =>
-                        dispatch(decrementGuest(guestCategory.adult))
-                      }
-                      onPlusClick={() =>
-                        dispatch(incrementGuest(guestCategory.adult))
-                      }
+                      value={adults}
+                      onMinusClick={() => {
+                        if (adults > 0) setAdults((prev) => prev - 1);
+                      }}
+                      onPlusClick={() => setAdults((prev) => prev + 1)}
                     />
                     <Counter
                       title="Children"
                       subtitle="Age 2-12"
-                      value={noOfGuests.children}
-                      onMinusClick={() =>
-                        dispatch(decrementGuest(guestCategory.children))
-                      }
-                      onPlusClick={() =>
-                        dispatch(incrementGuest(guestCategory.children))
-                      }
+                      value={children}
+                      onMinusClick={() => {
+                        if (children > 0) setChildren((prev) => prev - 1);
+                      }}
+                      onPlusClick={() => setChildren((prev) => prev + 1)}
                     />
                   </div>
                 )}
@@ -163,7 +166,7 @@ function SearchMenu({
             </div>
           </div>
           <div className="lg:hidden mx-auto">
-            <Button />
+            <Button onClick={handleSearch} />
           </div>
         </Container>
       </div>

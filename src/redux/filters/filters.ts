@@ -7,6 +7,7 @@ export type FiltersState = {
     adults: number;
     children: number;
   };
+  totalGuests: number;
 };
 const initialState: FiltersState = {
   location: "",
@@ -14,6 +15,7 @@ const initialState: FiltersState = {
     adults: 0,
     children: 0,
   },
+  totalGuests: 0,
 };
 
 const filterSlice = createSlice({
@@ -25,18 +27,21 @@ const filterSlice = createSlice({
     },
     decrementGuest: (state, action) => {
       const guests = state.value.guests;
-      if (guests.adults + guests.children > 0) {
-        if (action.payload === guestCategory.adult) {
-          state.value = {
-            ...state.value,
-            guests: { ...guests, adults: guests.adults - 1 },
-          };
-        } else {
-          state.value = {
-            ...state.value,
-            guests: { ...guests, children: guests.children - 1 },
-          };
-        }
+      if (action.payload === guestCategory.adult && guests.adults > 0) {
+        state.value = {
+          ...state.value,
+          guests: { ...guests, adults: guests.adults - 1 },
+          totalGuests: state.value.totalGuests - 1,
+        };
+      } else if (
+        action.payload === guestCategory.children &&
+        guests.children > 0
+      ) {
+        state.value = {
+          ...state.value,
+          guests: { ...guests, children: guests.children - 1 },
+          totalGuests: state.value.totalGuests - 1,
+        };
       }
     },
     incrementGuest: (state, action) => {
@@ -45,11 +50,13 @@ const filterSlice = createSlice({
         state.value = {
           ...state.value,
           guests: { ...guests, adults: guests.adults + 1 },
+          totalGuests: state.value.totalGuests + 1,
         };
       } else {
         state.value = {
           ...state.value,
           guests: { ...guests, children: guests.children + 1 },
+          totalGuests: state.value.totalGuests + 1,
         };
       }
     },
